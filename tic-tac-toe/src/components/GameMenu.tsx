@@ -11,6 +11,7 @@ import {
   Dice6,
   Grid3x3,
   Copy,
+  Users,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -94,6 +95,15 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       icon: Copy,
       difficulty: "Hard",
       players: "2 Players",
+    },
+    {
+      id: "threeplayer" as GameVariant,
+      title: "Three-Player Tic-Tac-Toe",
+      description:
+        "3 players on a 5x5 grid with X, O, and Δ. Alliances and strategy!",
+      icon: Users,
+      difficulty: "Expert",
+      players: "3 Players",
     },
   ];
 
