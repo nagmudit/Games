@@ -13,6 +13,9 @@ import RandomizedGame from "./games/RandomizedGame";
 import UltimateGame from "./games/UltimateGame";
 import TicTacTwoGame from "./games/TicTacTwoGame";
 import ThreePlayerGame from "./games/ThreePlayerGame";
+import ObstacleGame from "./games/ObstacleGame";
+import TimeControlledGame from "./games/TimeControlledGame";
+import PowerUpGame from "./games/PowerUpGame";
 
 export type GameVariant =
   | "classic"
@@ -24,7 +27,10 @@ export type GameVariant =
   | "randomized"
   | "ultimate"
   | "tictactwo"
-  | "threeplayer";
+  | "threeplayer"
+  | "obstacle"
+  | "timecontrolled"
+  | "powerup";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -57,6 +63,12 @@ export default function TicTacToeApp() {
         return <TicTacTwoGame onBack={() => setSelectedGame(null)} />;
       case "threeplayer":
         return <ThreePlayerGame onBack={() => setSelectedGame(null)} />;
+      case "obstacle":
+        return <ObstacleGame onBack={() => setSelectedGame(null)} />;
+      case "timecontrolled":
+        return <TimeControlledGame onBack={() => setSelectedGame(null)} />;
+      case "powerup":
+        return <PowerUpGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
     }

@@ -12,6 +12,9 @@ import {
   Grid3x3,
   Copy,
   Users,
+  Shield,
+  Clock,
+  Zap,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -104,6 +107,30 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       icon: Users,
       difficulty: "Expert",
       players: "3 Players",
+    },
+    {
+      id: "obstacle" as GameVariant,
+      title: "Tic-Tac-Toe with Obstacles",
+      description: "Navigate around blocked cells and dangerous traps!",
+      icon: Shield,
+      difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "timecontrolled" as GameVariant,
+      title: "Time-Controlled Tic-Tac-Toe",
+      description: "Chess clock rules - make your moves before time runs out!",
+      icon: Clock,
+      difficulty: "Hard",
+      players: "2 Players",
+    },
+    {
+      id: "powerup" as GameVariant,
+      title: "Tic-Tac-Toe with Power-Ups",
+      description: "Collect special abilities to gain the upper hand!",
+      icon: Zap,
+      difficulty: "Expert",
+      players: "2 Players",
     },
   ];
 
