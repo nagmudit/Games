@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Moon, Sun } from 'lucide-react';
-import GameMenu from './GameMenu';
-import ClassicGame from './games/ClassicGame';
-import NxNGame from './games/NxNGame';
-import ThreeDGame from './games/ThreeDGame';
-import InfiniteGame from './games/InfiniteGame';
+import { useState } from "react";
+import { Moon, Sun } from "lucide-react";
+import GameMenu from "./GameMenu";
+import ClassicGame from "./games/ClassicGame";
+import NxNGame from "./games/NxNGame";
+import ThreeDGame from "./games/ThreeDGame";
+import InfiniteGame from "./games/InfiniteGame";
 
-export type GameVariant = 'classic' | 'nxn' | '3d' | 'infinite';
+export type GameVariant = "classic" | "nxn" | "3d" | "infinite";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -16,18 +16,18 @@ export default function TicTacToeApp() {
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
-    document.documentElement.classList.toggle('dark');
+    document.documentElement.classList.toggle("dark");
   };
 
   const renderGame = () => {
     switch (selectedGame) {
-      case 'classic':
+      case "classic":
         return <ClassicGame onBack={() => setSelectedGame(null)} />;
-      case 'nxn':
+      case "nxn":
         return <NxNGame onBack={() => setSelectedGame(null)} />;
-      case '3d':
+      case "3d":
         return <ThreeDGame onBack={() => setSelectedGame(null)} />;
-      case 'infinite':
+      case "infinite":
         return <InfiniteGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
@@ -35,11 +35,11 @@ export default function TicTacToeApp() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-300 ${
-      isDarkMode 
-        ? 'bg-slate-900 text-slate-100' 
-        : 'bg-blue-50 text-slate-800'
-    }`}>
+    <div
+      className={`min-h-screen transition-colors duration-300 ${
+        isDarkMode ? "bg-slate-900 text-slate-100" : "bg-blue-50 text-slate-800"
+      }`}
+    >
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
@@ -50,8 +50,8 @@ export default function TicTacToeApp() {
             onClick={toggleTheme}
             className={`p-3 rounded-lg transition-colors duration-200 ${
               isDarkMode
-                ? 'bg-slate-800 hover:bg-slate-700 text-emerald-400'
-                : 'bg-white hover:bg-gray-100 text-blue-600 shadow-sm'
+                ? "bg-slate-800 hover:bg-slate-700 text-emerald-400"
+                : "bg-white hover:bg-gray-100 text-blue-600 shadow-sm"
             }`}
           >
             {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
@@ -59,9 +59,7 @@ export default function TicTacToeApp() {
         </header>
 
         {/* Game Content */}
-        <main>
-          {renderGame()}
-        </main>
+        <main>{renderGame()}</main>
       </div>
     </div>
   );

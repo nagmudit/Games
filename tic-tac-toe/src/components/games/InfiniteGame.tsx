@@ -1,18 +1,26 @@
-'use client';
+"use client";
 
-import { useState, useRef, useEffect } from 'react';
-import { ArrowLeft, RotateCcw, Trophy, ZoomIn, ZoomOut, Move, Home } from 'lucide-react';
+import { useState, useRef, useEffect } from "react";
+import {
+  ArrowLeft,
+  RotateCcw,
+  Trophy,
+  ZoomIn,
+  ZoomOut,
+  Move,
+  Home,
+} from "lucide-react";
 
 interface InfiniteGameProps {
   onBack: () => void;
 }
 
-type Player = 'X' | 'O' | null;
+type Player = "X" | "O" | null;
 type CellPosition = { x: number; y: number };
 
 export default function InfiniteGame({ onBack }: InfiniteGameProps) {
   const [board, setBoard] = useState<Map<string, Player>>(new Map());
-  const [currentPlayer, setCurrentPlayer] = useState<'X' | 'O'>('X');
+  const [currentPlayer, setCurrentPlayer] = useState<"X" | "O">("X");
   const [winner, setWinner] = useState<Player>(null);
   const [gameEnded, setGameEnded] = useState(false);
   const [scoreX, setScoreX] = useState(0);
@@ -35,12 +43,15 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     if (!player) return null;
 
     const directions = [
-      [1, 0], [0, 1], [1, 1], [1, -1]
+      [1, 0],
+      [0, 1],
+      [1, 1],
+      [1, -1],
     ];
 
     for (const [dx, dy] of directions) {
       let count = 1;
-      
+
       // Check in positive direction
       for (let i = 1; i < 5; i++) {
         const key = positionToKey(x + dx * i, y + dy * i);
@@ -78,16 +89,16 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     if (gameWinner) {
       setWinner(gameWinner);
       setGameEnded(true);
-      if (gameWinner === 'X') setScoreX(scoreX + 1);
+      if (gameWinner === "X") setScoreX(scoreX + 1);
       else setScoreO(scoreO + 1);
     } else {
-      setCurrentPlayer(currentPlayer === 'X' ? 'O' : 'X');
+      setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
     }
   };
 
   const resetGame = () => {
     setBoard(new Map());
-    setCurrentPlayer('X');
+    setCurrentPlayer("X");
     setWinner(null);
     setGameEnded(false);
   };
@@ -108,10 +119,10 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
-    
+
     const deltaX = e.clientX - dragStart.x;
     const deltaY = e.clientY - dragStart.y;
-    
+
     setViewportX(viewportX - deltaX / (CELL_SIZE * zoom));
     setViewportY(viewportY - deltaY / (CELL_SIZE * zoom));
     setDragStart({ x: e.clientX, y: e.clientY });
@@ -137,7 +148,7 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       for (let x = startX; x <= endX; x++) {
         const key = positionToKey(x, y);
         const cell = board.get(key);
-        
+
         cells.push(
           <button
             key={key}
@@ -145,15 +156,25 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
             disabled={cell !== null || gameEnded}
             className="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:cursor-not-allowed flex items-center justify-center text-sm font-bold"
             style={{
-              position: 'absolute',
-              left: (x - viewportX) * CELL_SIZE * zoom + VIEWPORT_SIZE * CELL_SIZE * zoom / 2,
-              top: (y - viewportY) * CELL_SIZE * zoom + VIEWPORT_SIZE * CELL_SIZE * zoom / 2,
+              position: "absolute",
+              left:
+                (x - viewportX) * CELL_SIZE * zoom +
+                (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2,
+              top:
+                (y - viewportY) * CELL_SIZE * zoom +
+                (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2,
               width: CELL_SIZE * zoom,
               height: CELL_SIZE * zoom,
-              fontSize: `${Math.max(12, 16 * zoom)}px`
+              fontSize: `${Math.max(12, 16 * zoom)}px`,
             }}
           >
-            <span className={cell === 'X' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}>
+            <span
+              className={
+                cell === "X"
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-red-600 dark:text-red-400"
+              }
+            >
               {cell}
             </span>
           </button>
@@ -170,19 +191,19 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       if (!isDragging) return;
       const deltaX = e.clientX - dragStart.x;
       const deltaY = e.clientY - dragStart.y;
-      setViewportX(prev => prev - deltaX / (CELL_SIZE * zoom));
-      setViewportY(prev => prev - deltaY / (CELL_SIZE * zoom));
+      setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
+      setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
       setDragStart({ x: e.clientX, y: e.clientY });
     };
 
     if (isDragging) {
-      document.addEventListener('mousemove', handleGlobalMouseMove);
-      document.addEventListener('mouseup', handleGlobalMouseUp);
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
     }
 
     return () => {
-      document.removeEventListener('mousemove', handleGlobalMouseMove);
-      document.removeEventListener('mouseup', handleGlobalMouseUp);
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
     };
   }, [isDragging, dragStart, zoom]);
 
@@ -203,16 +224,24 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       <div className="grid grid-cols-2 gap-4 mb-6">
         <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
           <div className="text-center">
-            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">X</div>
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              X
+            </div>
             <div className="text-lg font-semibold">{scoreX}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Player 1</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400">
+              Player 1
+            </div>
           </div>
         </div>
         <div className="bg-white dark:bg-slate-800 rounded-lg p-4 border border-slate-200 dark:border-slate-700">
           <div className="text-center">
-            <div className="text-2xl font-bold text-red-600 dark:text-red-400">O</div>
+            <div className="text-2xl font-bold text-red-600 dark:text-red-400">
+              O
+            </div>
             <div className="text-lg font-semibold">{scoreO}</div>
-            <div className="text-sm text-slate-600 dark:text-slate-400">Player 2</div>
+            <div className="text-sm text-slate-600 dark:text-slate-400">
+              Player 2
+            </div>
           </div>
         </div>
       </div>
@@ -234,7 +263,16 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
           </div>
         ) : (
           <div className="text-lg font-semibold">
-            Current Player: <span className={currentPlayer === 'X' ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}>{currentPlayer}</span>
+            Current Player:{" "}
+            <span
+              className={
+                currentPlayer === "X"
+                  ? "text-blue-600 dark:text-blue-400"
+                  : "text-red-600 dark:text-red-400"
+              }
+            >
+              {currentPlayer}
+            </span>
           </div>
         )}
       </div>
@@ -276,21 +314,21 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
           style={{
             width: VIEWPORT_SIZE * CELL_SIZE * zoom,
             height: VIEWPORT_SIZE * CELL_SIZE * zoom,
-            maxWidth: '90vw',
-            maxHeight: '60vh'
+            maxWidth: "90vw",
+            maxHeight: "60vh",
           }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         >
           {renderGrid()}
-          
+
           {/* Center indicator */}
           <div
             className="absolute w-1 h-1 bg-red-500 rounded-full"
             style={{
-              left: VIEWPORT_SIZE * CELL_SIZE * zoom / 2 - 2,
-              top: VIEWPORT_SIZE * CELL_SIZE * zoom / 2 - 2,
+              left: (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2 - 2,
+              top: (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2 - 2,
             }}
           />
         </div>
@@ -315,7 +353,10 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
 
       {/* Instructions */}
       <div className="mt-8 text-center text-sm text-slate-600 dark:text-slate-400">
-        <p>Get 5 in a row in any direction to win! Drag to explore the infinite grid.</p>
+        <p>
+          Get 5 in a row in any direction to win! Drag to explore the infinite
+          grid.
+        </p>
       </div>
     </div>
   );
