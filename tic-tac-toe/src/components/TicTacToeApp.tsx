@@ -16,6 +16,7 @@ import ThreePlayerGame from "./games/ThreePlayerGame";
 import ObstacleGame from "./games/ObstacleGame";
 import TimeControlledGame from "./games/TimeControlledGame";
 import PowerUpGame from "./games/PowerUpGame";
+import MoveRotationGame from "./games/MoveRotationGame";
 
 export type GameVariant =
   | "classic"
@@ -30,7 +31,8 @@ export type GameVariant =
   | "threeplayer"
   | "obstacle"
   | "timecontrolled"
-  | "powerup";
+  | "powerup"
+  | "moverotation";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -69,6 +71,8 @@ export default function TicTacToeApp() {
         return <TimeControlledGame onBack={() => setSelectedGame(null)} />;
       case "powerup":
         return <PowerUpGame onBack={() => setSelectedGame(null)} />;
+      case "moverotation":
+        return <MoveRotationGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
     }

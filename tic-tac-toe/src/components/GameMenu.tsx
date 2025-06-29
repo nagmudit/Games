@@ -15,6 +15,7 @@ import {
   Shield,
   Clock,
   Zap,
+  RotateCw,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -129,6 +130,15 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       title: "Tic-Tac-Toe with Power-Ups",
       description: "Collect special abilities to gain the upper hand!",
       icon: Zap,
+      difficulty: "Expert",
+      players: "2 Players",
+    },
+    {
+      id: "moverotation" as GameVariant,
+      title: "Move Rotation",
+      description:
+        "Limited memory! Old moves disappear when you exceed the limit.",
+      icon: RotateCw,
       difficulty: "Expert",
       players: "2 Players",
     },
