@@ -20,6 +20,7 @@ import {
   Hash,
   Circle,
   EyeOff,
+  Trash2,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -187,6 +188,15 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         "Memory challenge! Make moves without seeing the board state.",
       icon: EyeOff,
       difficulty: "Expert",
+      players: "2 Players",
+    },
+    {
+      id: "erasereplace" as GameVariant,
+      title: "Erase & Replace",
+      description:
+        "Capture opponent&apos;s pieces after turn 3. Adds mild capture mechanics!",
+      icon: Trash2,
+      difficulty: "Medium",
       players: "2 Players",
     },
   ];

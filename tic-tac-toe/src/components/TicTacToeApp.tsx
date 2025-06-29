@@ -22,6 +22,7 @@ import NumericalGame from "./games/NumericalGame";
 import CircularGame from "./games/CircularGame";
 import DiceGame from "./games/DiceGame";
 import BlindGame from "./games/BlindGame";
+import EraseReplaceGame from "./games/EraseReplaceGame";
 
 export type GameVariant =
   | "classic"
@@ -42,7 +43,8 @@ export type GameVariant =
   | "numerical"
   | "circular"
   | "dice"
-  | "blind";
+  | "blind"
+  | "erasereplace";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -93,6 +95,8 @@ export default function TicTacToeApp() {
         return <DiceGame onBack={() => setSelectedGame(null)} />;
       case "blind":
         return <BlindGame onBack={() => setSelectedGame(null)} />;
+      case "erasereplace":
+        return <EraseReplaceGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
     }
