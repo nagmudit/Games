@@ -19,6 +19,7 @@ import {
   Minus,
   Hash,
   Circle,
+  EyeOff,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -168,6 +169,24 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         "Clock-like circular board. Get 3 consecutive around the circle!",
       icon: Circle,
       difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "dice" as GameVariant,
+      title: "Dice Tic-Tac-Toe",
+      description:
+        "Roll dice to determine your move coordinates. Luck meets strategy!",
+      icon: Dice6,
+      difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "blind" as GameVariant,
+      title: "Blind Tic-Tac-Toe",
+      description:
+        "Memory challenge! Make moves without seeing the board state.",
+      icon: EyeOff,
+      difficulty: "Expert",
       players: "2 Players",
     },
   ];

@@ -20,6 +20,8 @@ import MoveRotationGame from "./games/MoveRotationGame";
 import OneDimensionalGame from "./games/OneDimensionalGame";
 import NumericalGame from "./games/NumericalGame";
 import CircularGame from "./games/CircularGame";
+import DiceGame from "./games/DiceGame";
+import BlindGame from "./games/BlindGame";
 
 export type GameVariant =
   | "classic"
@@ -38,7 +40,9 @@ export type GameVariant =
   | "moverotation"
   | "onedimensional"
   | "numerical"
-  | "circular";
+  | "circular"
+  | "dice"
+  | "blind";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -85,6 +89,10 @@ export default function TicTacToeApp() {
         return <NumericalGame onBack={() => setSelectedGame(null)} />;
       case "circular":
         return <CircularGame onBack={() => setSelectedGame(null)} />;
+      case "dice":
+        return <DiceGame onBack={() => setSelectedGame(null)} />;
+      case "blind":
+        return <BlindGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
     }
