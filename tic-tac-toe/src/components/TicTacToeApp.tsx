@@ -10,6 +10,8 @@ import InfiniteGame from "./games/InfiniteGame";
 import MisereGame from "./games/MisereGame";
 import WildGame from "./games/WildGame";
 import RandomizedGame from "./games/RandomizedGame";
+import UltimateGame from "./games/UltimateGame";
+import TicTacTwoGame from "./games/TicTacTwoGame";
 
 export type GameVariant =
   | "classic"
@@ -18,7 +20,9 @@ export type GameVariant =
   | "infinite"
   | "misere"
   | "wild"
-  | "randomized";
+  | "randomized"
+  | "ultimate"
+  | "tictactwo";
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
@@ -45,6 +49,10 @@ export default function TicTacToeApp() {
         return <WildGame onBack={() => setSelectedGame(null)} />;
       case "randomized":
         return <RandomizedGame onBack={() => setSelectedGame(null)} />;
+      case "ultimate":
+        return <UltimateGame onBack={() => setSelectedGame(null)} />;
+      case "tictactwo":
+        return <TicTacTwoGame onBack={() => setSelectedGame(null)} />;
       default:
         return <GameMenu onSelectGame={setSelectedGame} />;
     }

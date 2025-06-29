@@ -9,6 +9,8 @@ import {
   AlertTriangle,
   Shuffle,
   Dice6,
+  Grid3x3,
+  Copy,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -74,6 +76,22 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       description: "First few moves are randomly placed. Adapt your strategy!",
       icon: Dice6,
       difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "ultimate" as GameVariant,
+      title: "Ultimate Tic-Tac-Toe",
+      description: "9 mini boards in a 3x3 grid. Your move determines where opponent plays next!",
+      icon: Grid3x3,
+      difficulty: "Expert",
+      players: "2 Players",
+    },
+    {
+      id: "tictactwo" as GameVariant,
+      title: "Tic-Tac-Two",
+      description: "Two parallel boards. Win both boards to claim victory!",
+      icon: Copy,
+      difficulty: "Hard",
       players: "2 Players",
     },
   ];
