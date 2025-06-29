@@ -81,7 +81,8 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
     {
       id: "ultimate" as GameVariant,
       title: "Ultimate Tic-Tac-Toe",
-      description: "9 mini boards in a 3x3 grid. Your move determines where opponent plays next!",
+      description:
+        "9 mini boards in a 3x3 grid. Your move determines where opponent plays next!",
       icon: Grid3x3,
       difficulty: "Expert",
       players: "2 Players",
