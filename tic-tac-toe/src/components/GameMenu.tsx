@@ -16,6 +16,9 @@ import {
   Clock,
   Zap,
   RotateCw,
+  Minus,
+  Hash,
+  Circle,
 } from "lucide-react";
 
 interface GameMenuProps {
@@ -140,6 +143,31 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         "Limited memory! Old moves disappear when you exceed the limit.",
       icon: RotateCw,
       difficulty: "Expert",
+      players: "2 Players",
+    },
+    {
+      id: "onedimensional" as GameVariant,
+      title: "One-Dimensional",
+      description: "Pure linear strategy on a single row. Deceptively complex!",
+      icon: Minus,
+      difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "numerical" as GameVariant,
+      title: "Numerical Tic-Tac-Toe",
+      description: "Use numbers 1-9 to sum lines to 15. Math meets strategy!",
+      icon: Hash,
+      difficulty: "Hard",
+      players: "2 Players",
+    },
+    {
+      id: "circular" as GameVariant,
+      title: "Circular Board",
+      description:
+        "Clock-like circular board. Get 3 consecutive around the circle!",
+      icon: Circle,
+      difficulty: "Medium",
       players: "2 Players",
     },
   ];
