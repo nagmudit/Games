@@ -1,7 +1,15 @@
 "use client";
 
 import { GameVariant } from "./TicTacToeApp";
-import { Grid3X3, Grid2X2, Layers, Infinity } from "lucide-react";
+import {
+  Grid3X3,
+  Grid2X2,
+  Layers,
+  Infinity,
+  AlertTriangle,
+  Shuffle,
+  Dice6,
+} from "lucide-react";
 
 interface GameMenuProps {
   onSelectGame: (game: GameVariant) => void;
@@ -42,6 +50,32 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       difficulty: "Expert",
       players: "2 Players",
     },
+    {
+      id: "misere" as GameVariant,
+      title: "Misère Tic-Tac-Toe",
+      description:
+        "Reverse rules! Try to avoid making 3 in a row. First to get 3 loses!",
+      icon: AlertTriangle,
+      difficulty: "Medium",
+      players: "2 Players",
+    },
+    {
+      id: "wild" as GameVariant,
+      title: "Wild Tic-Tac-Toe",
+      description:
+        "Place either X or O on your turn. Strategic bluffing is key!",
+      icon: Shuffle,
+      difficulty: "Hard",
+      players: "2 Players",
+    },
+    {
+      id: "randomized" as GameVariant,
+      title: "Randomized Start",
+      description: "First few moves are randomly placed. Adapt your strategy!",
+      icon: Dice6,
+      difficulty: "Medium",
+      players: "2 Players",
+    },
   ];
 
   return (
@@ -55,7 +89,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {games.map((game) => (
           <button
             key={game.id}
