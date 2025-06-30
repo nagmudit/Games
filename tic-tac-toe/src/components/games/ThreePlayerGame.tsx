@@ -224,7 +224,7 @@ export default function ThreePlayerGame({ onBack }: ThreePlayerGameProps) {
       {/* Score Board and Rankings */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
         {/* Player Scores */}
-        {Object.entries(scores).map(([player, score], index) => {
+        {Object.entries(scores).map(([player, score]) => {
           const playerName = player as PlayerName;
           const rank = getPlayerRank().indexOf(playerName) + 1;
           const isCurrentPlayer = currentPlayer === playerName;

@@ -25,7 +25,6 @@ export default function BlindGame({ onBack }: BlindGameProps) {
       result: "success" | "occupied";
     }[]
   >([]);
-  const [selectedPosition, setSelectedPosition] = useState<number | null>(null);
   const [coordinateInput, setCoordinateInput] = useState("");
 
   const checkWinner = (squares: Cell[]) => {
@@ -232,7 +231,6 @@ export default function BlindGame({ onBack }: BlindGameProps) {
     setWinner(null);
     setGameEnded(false);
     setMoveHistory([]);
-    setSelectedPosition(null);
     setCoordinateInput("");
     setShowBoard(false);
   };
