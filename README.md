@@ -10,6 +10,8 @@
 
 **The most comprehensive collection of Tic-Tac-Toe variants ever created!**
 
+### 🌐 **[🎮 PLAY LIVE DEMO →](https://xox-overse.vercel.app/)**
+
 [🚀 Play Now](#-getting-started) • [🎯 Game Variants](#-game-variants) • [⚡ Features](#-features) • [🛠️ Development](#-development)
 
 </div>
@@ -216,7 +218,7 @@ This project is open source and available under the [MIT License](LICENSE).
 
 <div align="center">
 
-**Built with ❤️ by passionate developers**
+**Built with ❤️ by [Mudit Nag](https://www.linkedin.com/in/nagmudit/)**
 
 [⭐ Star this repository](https://github.com/yourusername/tic-tac-toe) if you enjoyed playing!
 
