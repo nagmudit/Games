@@ -121,7 +121,7 @@ export default function TicTacToeApp() {
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-emerald-400 dark:to-cyan-400 bg-clip-text text-transparent symbol-hover">
-            Tic-Tac-Toe Variants
+            XOXOverse
           </h1>
           <button
             onClick={toggleTheme}
