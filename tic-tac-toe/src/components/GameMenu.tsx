@@ -235,6 +235,21 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         <p className="text-lg text-slate-600 dark:text-slate-400">
           Select from our collection of tic-tac-toe variants
         </p>
+
+        {/* Animated symbols around the title */}
+        <div className="relative mt-6 mb-8">
+          <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 text-4xl">
+            <span className="inline-block text-blue-500/40 dark:text-blue-400/30 wiggle-animation mr-4">
+              X
+            </span>
+            <span className="inline-block text-red-500/40 dark:text-red-400/30 float-animation">
+              O
+            </span>
+            <span className="inline-block text-green-500/40 dark:text-green-400/30 glitch-animation ml-4">
+              Δ
+            </span>
+          </div>
+        </div>
       </div>
 
       {/* Difficulty Filter */}
@@ -333,7 +348,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
                   <game.icon size={24} />
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-100">
+                  <h3 className="text-xl font-semibold mb-2 text-slate-800 dark:text-slate-100 group-hover:text-blue-600 dark:group-hover:text-emerald-400 transition-colors duration-300">
                     {game.title}
                   </h3>
                   <p className="text-slate-600 dark:text-slate-300 text-sm leading-relaxed">

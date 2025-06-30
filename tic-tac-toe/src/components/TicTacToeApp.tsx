@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Moon, Sun } from "lucide-react";
 import GameMenu from "./GameMenu";
+import AnimatedBackground from "./AnimatedBackground";
 import ClassicGame from "./games/ClassicGame";
 import NxNGame from "./games/NxNGame";
 import ThreeDGame from "./games/ThreeDGame";
@@ -48,7 +49,12 @@ export type GameVariant =
 
 export default function TicTacToeApp() {
   const [selectedGame, setSelectedGame] = useState<GameVariant | null>(null);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(true);
+
+  // Initialize dark mode on component mount
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+  }, []);
 
   const toggleTheme = () => {
     setIsDarkMode(!isDarkMode);
@@ -104,19 +110,22 @@ export default function TicTacToeApp() {
 
   return (
     <div
-      className={`min-h-screen transition-colors duration-300 ${
+      className={`min-h-screen transition-colors duration-300 relative ${
         isDarkMode ? "bg-slate-900 text-slate-100" : "bg-blue-50 text-slate-800"
       }`}
     >
-      <div className="container mx-auto px-4 py-8">
+      {/* Animated Background - only show on main menu */}
+      {!selectedGame && <AnimatedBackground />}
+
+      <div className="container mx-auto px-4 py-8 relative z-10">
         {/* Header */}
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-emerald-400 dark:to-cyan-400 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-emerald-400 dark:to-cyan-400 bg-clip-text text-transparent symbol-hover">
             Tic-Tac-Toe Variants
           </h1>
           <button
             onClick={toggleTheme}
-            className={`p-3 rounded-lg transition-colors duration-200 ${
+            className={`p-3 rounded-lg transition-colors duration-200 symbol-hover ${
               isDarkMode
                 ? "bg-slate-800 hover:bg-slate-700 text-emerald-400"
                 : "bg-white hover:bg-gray-100 text-blue-600 shadow-sm"
