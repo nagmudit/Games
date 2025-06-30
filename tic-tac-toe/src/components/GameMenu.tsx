@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { GameVariant } from "./TicTacToeApp";
 import {
   Grid3X3,
@@ -21,13 +22,19 @@ import {
   Circle,
   EyeOff,
   Trash2,
+  Filter,
+  X,
 } from "lucide-react";
 
 interface GameMenuProps {
   onSelectGame: (game: GameVariant) => void;
 }
 
+type DifficultyFilter = "All" | "Easy" | "Medium" | "Hard" | "Expert";
+
 export default function GameMenu({ onSelectGame }: GameMenuProps) {
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<DifficultyFilter>("All");
   const games = [
     {
       id: "classic" as GameVariant,
@@ -51,7 +58,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       title: "3D Tic-Tac-Toe",
       description: "Multi-layer 3D boards. Win across x, y, or z dimensions.",
       icon: Layers,
-      difficulty: "Hard",
+      difficulty: "Expert",
       players: "2 Players",
     },
     {
@@ -68,7 +75,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       description:
         "Reverse rules! Try to avoid making 3 in a row. First to get 3 loses!",
       icon: AlertTriangle,
-      difficulty: "Medium",
+      difficulty: "Easy",
       players: "2 Players",
     },
     {
@@ -111,7 +118,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       description:
         "3 players on a 5x5 grid with X, O, and Δ. Alliances and strategy!",
       icon: Users,
-      difficulty: "Expert",
+      difficulty: "Hard",
       players: "3 Players",
     },
     {
@@ -127,7 +134,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       title: "Time-Controlled Tic-Tac-Toe",
       description: "Chess clock rules - make your moves before time runs out!",
       icon: Clock,
-      difficulty: "Hard",
+      difficulty: "Medium",
       players: "2 Players",
     },
     {
@@ -152,7 +159,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       title: "One-Dimensional",
       description: "Pure linear strategy on a single row. Deceptively complex!",
       icon: Minus,
-      difficulty: "Medium",
+      difficulty: "Easy",
       players: "2 Players",
     },
     {
@@ -178,7 +185,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       description:
         "Roll dice to determine your move coordinates. Luck meets strategy!",
       icon: Dice6,
-      difficulty: "Medium",
+      difficulty: "Easy",
       players: "2 Players",
     },
     {
@@ -201,6 +208,24 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
     },
   ];
 
+  const difficultyOptions: DifficultyFilter[] = [
+    "All",
+    "Easy",
+    "Medium",
+    "Hard",
+    "Expert",
+  ];
+
+  const filteredGames =
+    selectedDifficulty === "All"
+      ? games
+      : games.filter((game) => game.difficulty === selectedDifficulty);
+
+  const getDifficultyCount = (difficulty: DifficultyFilter) => {
+    if (difficulty === "All") return games.length;
+    return games.filter((game) => game.difficulty === difficulty).length;
+  };
+
   return (
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-12">
@@ -212,8 +237,89 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
         </p>
       </div>
 
+      {/* Difficulty Filter */}
+      <div className="mb-8">
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <Filter size={20} className="text-slate-600 dark:text-slate-400" />
+          <span className="text-lg font-medium text-slate-800 dark:text-slate-200">
+            Filter by Difficulty:
+          </span>
+        </div>
+
+        <div className="flex flex-wrap justify-center gap-3">
+          {difficultyOptions.map((difficulty) => (
+            <button
+              key={difficulty}
+              onClick={() => setSelectedDifficulty(difficulty)}
+              className={`px-4 py-2 rounded-full font-medium text-sm transition-all duration-200 flex items-center gap-2 ${
+                selectedDifficulty === difficulty
+                  ? difficulty === "Easy"
+                    ? "bg-green-500 text-white shadow-lg"
+                    : difficulty === "Medium"
+                    ? "bg-yellow-500 text-white shadow-lg"
+                    : difficulty === "Hard"
+                    ? "bg-orange-500 text-white shadow-lg"
+                    : difficulty === "Expert"
+                    ? "bg-red-500 text-white shadow-lg"
+                    : "bg-blue-500 text-white shadow-lg"
+                  : "bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-slate-600"
+              }`}
+            >
+              {difficulty}
+              <span className="bg-white/20 px-1.5 py-0.5 rounded-full text-xs">
+                {getDifficultyCount(difficulty)}
+              </span>
+              {selectedDifficulty === difficulty &&
+                selectedDifficulty !== "All" && (
+                  <X
+                    size={14}
+                    className="hover:bg-white/20 rounded-full p-0.5"
+                  />
+                )}
+            </button>
+          ))}
+        </div>
+
+        {selectedDifficulty !== "All" && (
+          <div className="text-center mt-4">
+            <button
+              onClick={() => setSelectedDifficulty("All")}
+              className="text-sm text-blue-600 dark:text-emerald-400 hover:underline"
+            >
+              Clear filter and show all {games.length} variants
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Results Count */}
+      <div className="text-center mb-6">
+        <p className="text-sm text-slate-600 dark:text-slate-400">
+          Showing {filteredGames.length} of {games.length} variants
+          {selectedDifficulty !== "All" && (
+            <span className="ml-2">
+              •{" "}
+              <span
+                className={`font-medium ${
+                  selectedDifficulty === "Easy"
+                    ? "text-green-600 dark:text-green-400"
+                    : selectedDifficulty === "Medium"
+                    ? "text-yellow-600 dark:text-yellow-400"
+                    : selectedDifficulty === "Hard"
+                    ? "text-orange-600 dark:text-orange-400"
+                    : "text-red-600 dark:text-red-400"
+                }`}
+              >
+                {selectedDifficulty}
+              </span>{" "}
+              difficulty
+            </span>
+          )}
+        </p>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {games.map((game) => (
+        {filteredGames.map((game) => (
           <button
             key={game.id}
             onClick={() => onSelectGame(game.id)}
