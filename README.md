@@ -84,7 +84,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 </details>
 
 <details>
-<summary><b>🟡 Medium Level (5 variants)</b></summary>
+<summary><b>🟡 Medium Level (6 variants)</b></summary>
 
 | Game | Description | Players |
 |------|-------------|---------|
@@ -110,7 +110,7 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your system.
 </details>
 
 <details>
-<summary><b>🔴 Expert Level (7 variants)</b></summary>
+<summary><b>🔴 Expert Level (6 variants)</b></summary>
 
 | Game | Description | Players |
 |------|-------------|---------|
@@ -201,18 +201,6 @@ Each game variant implements unique mechanics:
 - **📏 ESLint**: Code quality enforcement
 - **🎨 Tailwind**: Rapid UI development
 
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-1. **🍴 Fork the Repository**
-2. **🌿 Create a Feature Branch**: `git checkout -b feature/new-game-variant`
-3. **💻 Make Your Changes**: Add new game variants or improve existing ones
-4. **✅ Run Tests**: Ensure your code works properly
-5. **📝 Commit Changes**: `git commit -m "Add new game variant"`
-6. **🚀 Push to Branch**: `git push origin feature/new-game-variant`
-7. **🎯 Open Pull Request**: Submit your changes for review
-
 ### Ideas for New Variants
 
 - **Gravity Tic-Tac-Toe**: Pieces fall down like Connect Four
@@ -223,14 +211,6 @@ We welcome contributions! Here's how you can help:
 ## 📜 License
 
 This project is open source and available under the [MIT License](LICENSE).
-
-## 🙏 Acknowledgments
-
-- **Next.js Team** - For the amazing React framework
-- **Tailwind CSS** - For the utility-first CSS approach
-- **Lucide** - For the beautiful icon library
-- **React Team** - For the incredible UI library
-- **TypeScript Team** - For type safety and developer experience
 
 ---
 
