@@ -168,16 +168,35 @@ export default function EraseReplaceGame({ onBack }: EraseReplaceGameProps) {
   return (
     <div className="max-w-4xl mx-auto">
       {/* Header */}
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center gap-4 mb-8">
         <button
           onClick={onBack}
-          className="flex items-center gap-2 px-4 py-2 bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-lg transition-colors"
+          className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
         >
           <ArrowLeft size={20} />
-          Back to Menu
         </button>
-        <h2 className="text-3xl font-bold text-center">Erase & Replace</h2>
-        <div className="w-32" /> {/* Spacer for centering */}
+        <h2 className="text-2xl font-bold">Erase & Replace Tic-Tac-Toe</h2>
+        <Trash2 className="text-red-500" size={24} />
+      </div>
+
+      {/* Rules */}
+      <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
+        <div className="flex items-center gap-2 mb-2">
+          <Trash2 className="text-red-600 dark:text-red-400" size={16} />
+          <h3 className="font-semibold text-red-800 dark:text-red-300">
+            Erase & Replace Rules!
+          </h3>
+        </div>
+        <div className="text-sm text-red-700 dark:text-red-400 space-y-1">
+          <p>• Place your mark in empty cells normally</p>
+          <p>
+            • After turn 3, you can erase opponent&apos;s marks by clicking on
+            them
+          </p>
+          <p>• Erasing replaces the opponent&apos;s mark with your own</p>
+          <p>• You cannot erase your own marks</p>
+          <p>• Get 3 in a row to win!</p>
+        </div>
       </div>
 
       {/* Game Info */}
@@ -296,50 +315,34 @@ export default function EraseReplaceGame({ onBack }: EraseReplaceGameProps) {
         </div>
       </div>
 
-      {/* Rules */}
-      <div className="bg-slate-100 dark:bg-slate-800 rounded-xl p-6 shadow-lg">
-        <h3 className="text-lg font-bold mb-3">Erase & Replace Rules</h3>
-        <ul className="space-y-2 text-sm text-slate-600 dark:text-slate-400">
-          <li>• Place your mark in empty cells normally</li>
-          <li>
-            • After turn 3, you can erase opponent&apos;s marks by clicking on
-            them
-          </li>
-          <li>• Erasing replaces the opponent&apos;s mark with your own</li>
-          <li>• You cannot erase your own marks</li>
-          <li>• Get 3 in a row to win!</li>
-        </ul>
-
-        {moveHistory.length > 0 && (
-          <div className="mt-4">
-            <h4 className="font-semibold mb-2">Move History</h4>
-            <div className="max-h-24 overflow-y-auto space-y-1">
-              {moveHistory.slice(-6).map((move, index) => (
-                <div key={index} className="text-xs flex items-center gap-2">
-                  <span
-                    className={
-                      move.player === "X"
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-emerald-600 dark:text-emerald-400"
-                    }
-                  >
-                    {move.player}
-                  </span>
-                  <span>
-                    {move.action === "erase"
-                      ? "erased & replaced"
-                      : "placed at"}{" "}
-                    position {move.position + 1}
-                  </span>
-                  {move.action === "erase" && (
-                    <Trash2 size={10} className="text-red-500" />
-                  )}
-                </div>
-              ))}
-            </div>
+      {/* Move History */}
+      {moveHistory.length > 0 && (
+        <div className="bg-slate-100 dark:bg-slate-800 rounded-xl p-6 shadow-lg">
+          <h3 className="text-lg font-bold mb-3">Move History</h3>
+          <div className="max-h-24 overflow-y-auto space-y-1">
+            {moveHistory.slice(-6).map((move, index) => (
+              <div key={index} className="text-xs flex items-center gap-2">
+                <span
+                  className={
+                    move.player === "X"
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-emerald-600 dark:text-emerald-400"
+                  }
+                >
+                  {move.player}
+                </span>
+                <span>
+                  {move.action === "erase" ? "erased & replaced" : "placed at"}{" "}
+                  position {move.position + 1}
+                </span>
+                {move.action === "erase" && (
+                  <Trash2 size={10} className="text-red-500" />
+                )}
+              </div>
+            ))}
           </div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   );
 }
