@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
@@ -12,6 +12,15 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#3b82f6" },
+    { media: "(prefers-color-scheme: dark)", color: "#10b981" },
+  ],
+};
+
 export const metadata: Metadata = {
   title: "XOXOverse - 20 Unique Tic-Tac-Toe Variants",
   description:
@@ -20,11 +29,6 @@ export const metadata: Metadata = {
     "tic-tac-toe, games, variants, puzzles, strategy, 3D, ultimate, blind, power-ups, three-player, circular, numerical, dice, brain games, XOXOverse",
   authors: [{ name: "XOXOverse" }],
   creator: "XOXOverse Collection",
-  viewport: "width=device-width, initial-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#3b82f6" },
-    { media: "(prefers-color-scheme: dark)", color: "#10b981" },
-  ],
   openGraph: {
     title: "XOXOverse - 20 Unique Tic-Tac-Toe Variants",
     description:
