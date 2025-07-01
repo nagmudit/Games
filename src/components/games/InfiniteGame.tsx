@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   RotateCcw,
@@ -16,7 +16,6 @@ interface InfiniteGameProps {
 }
 
 type Player = "X" | "O" | null;
-type CellPosition = { x: number; y: number };
 
 export default function InfiniteGame({ onBack }: InfiniteGameProps) {
   const [board, setBoard] = useState<Map<string, Player>>(new Map());
@@ -28,16 +27,23 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
   const [viewportX, setViewportX] = useState(0);
   const [viewportY, setViewportY] = useState(0);
   const [zoom, setZoom] = useState(1);
+
+  // Drag state
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const canvasRef = useRef<HTMLDivElement>(null);
+  const [wasDragged, setWasDragged] = useState(false);
 
   const CELL_SIZE = 40;
   const VIEWPORT_SIZE = 15;
 
+  // For position key
   const positionToKey = (x: number, y: number) => `${x},${y}`;
 
-  const checkWinner = (board: Map<string, Player>, lastMove: CellPosition) => {
+  // Check winner (5 in a row)
+  const checkWinner = (
+    board: Map<string, Player>,
+    lastMove: { x: number; y: number }
+  ) => {
     const { x, y } = lastMove;
     const player = board.get(positionToKey(x, y));
     if (!player) return null;
@@ -51,36 +57,34 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
 
     for (const [dx, dy] of directions) {
       let count = 1;
-
-      // Check in positive direction
+      // Check positive direction
       for (let i = 1; i < 5; i++) {
         const key = positionToKey(x + dx * i, y + dy * i);
         if (board.get(key) === player) {
           count++;
-        } else {
-          break;
-        }
+        } else break;
       }
-
-      // Check in negative direction
+      // Check negative direction
       for (let i = 1; i < 5; i++) {
         const key = positionToKey(x - dx * i, y - dy * i);
         if (board.get(key) === player) {
           count++;
-        } else {
-          break;
-        }
+        } else break;
       }
-
       if (count >= 5) return player;
     }
-
     return null;
   };
 
+  // Handle cell click
   const handleCellClick = (x: number, y: number, e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    if (wasDragged) {
+      setWasDragged(false);
+      return;
+    }
 
     if (board.get(positionToKey(x, y)) || gameEnded) return;
 
@@ -99,6 +103,7 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     }
   };
 
+  // Resets
   const resetGame = () => {
     setBoard(new Map());
     setCurrentPlayer("X");
@@ -115,47 +120,72 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     setZoom(1);
   };
 
+  // Panning logic
   const handleMouseDown = (e: React.MouseEvent) => {
     setIsDragging(true);
     setDragStart({ x: e.clientX, y: e.clientY });
+    setWasDragged(false);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging) return;
-
     const deltaX = e.clientX - dragStart.x;
     const deltaY = e.clientY - dragStart.y;
-
-    // Only start dragging if mouse has moved significantly
-    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-      setViewportX(viewportX - deltaX / (CELL_SIZE * zoom));
-      setViewportY(viewportY - deltaY / (CELL_SIZE * zoom));
+    if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+      setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
+      setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
       setDragStart({ x: e.clientX, y: e.clientY });
+      setWasDragged(true);
     }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
+  const handleMouseUp = () => setIsDragging(false);
 
+  // Global drag listeners for smooth panning
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const deltaX = e.clientX - dragStart.x;
+      const deltaY = e.clientY - dragStart.y;
+      if (Math.abs(deltaX) > 2 || Math.abs(deltaY) > 2) {
+        setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
+        setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
+        setDragStart({ x: e.clientX, y: e.clientY });
+        setWasDragged(true);
+      }
+    };
+    const handleGlobalMouseUp = () => setIsDragging(false);
+
+    if (isDragging) {
+      document.addEventListener("mousemove", handleGlobalMouseMove);
+      document.addEventListener("mouseup", handleGlobalMouseUp);
+    }
+    return () => {
+      document.removeEventListener("mousemove", handleGlobalMouseMove);
+      document.removeEventListener("mouseup", handleGlobalMouseUp);
+    };
+  }, [isDragging, dragStart, zoom]);
+
+  // Center the grid
   const centerView = () => {
     setViewportX(0);
     setViewportY(0);
   };
 
+  // Render grid
   const renderGrid = () => {
     const cells = [];
-    const startX = Math.floor(viewportX - VIEWPORT_SIZE / 2);
-    const endX = Math.ceil(viewportX + VIEWPORT_SIZE / 2);
-    const startY = Math.floor(viewportY - VIEWPORT_SIZE / 2);
-    const endY = Math.ceil(viewportY + VIEWPORT_SIZE / 2);
+    // Render extra border for panning safety
+    const startX = Math.floor(viewportX - VIEWPORT_SIZE / 2) - 1;
+    const endX = Math.ceil(viewportX + VIEWPORT_SIZE / 2) + 1;
+    const startY = Math.floor(viewportY - VIEWPORT_SIZE / 2) - 1;
+    const endY = Math.ceil(viewportY + VIEWPORT_SIZE / 2) + 1;
 
     for (let y = startY; y <= endY; y++) {
       for (let x = startX; x <= endX; x++) {
         const key = positionToKey(x, y);
         const cell = board.get(key);
-
-        // Calculate position relative to viewport center
+        // Position relative to center
         const relativeX = x - viewportX;
         const relativeY = y - viewportY;
 
@@ -164,7 +194,7 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
         const top =
           relativeY * CELL_SIZE * zoom + (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2;
 
-        // Only render cells that are within the visible area
+        // Only render visible
         if (
           left >= -CELL_SIZE * zoom &&
           left < VIEWPORT_SIZE * CELL_SIZE * zoom &&
@@ -206,40 +236,13 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
         }
       }
     }
-
     return cells;
   };
 
-  useEffect(() => {
-    const handleGlobalMouseUp = () => {
-      setIsDragging(false);
-    };
+  // Clamp zoom
+  const clampZoom = (z: number) => Math.max(0.4, Math.min(2, z));
 
-    const handleGlobalMouseMove = (e: MouseEvent) => {
-      if (!isDragging) return;
-
-      const deltaX = e.clientX - dragStart.x;
-      const deltaY = e.clientY - dragStart.y;
-
-      // Only start dragging if mouse has moved significantly
-      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
-        setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
-        setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
-        setDragStart({ x: e.clientX, y: e.clientY });
-      }
-    };
-
-    if (isDragging) {
-      document.addEventListener("mousemove", handleGlobalMouseMove);
-      document.addEventListener("mouseup", handleGlobalMouseUp);
-    }
-
-    return () => {
-      document.removeEventListener("mousemove", handleGlobalMouseMove);
-      document.removeEventListener("mouseup", handleGlobalMouseUp);
-    };
-  }, [isDragging, dragStart, zoom]);
-
+  // UI
   return (
     <div className="max-w-6xl mx-auto">
       {/* Header */}
@@ -291,7 +294,7 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
                 </span>
               </>
             ) : (
-              <span className="text-lg font-semibold">It&apos;s a Draw!</span>
+              <span className="text-lg font-semibold">Game Over</span>
             )}
           </div>
         ) : (
@@ -313,14 +316,14 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       {/* Controls */}
       <div className="flex justify-center items-center gap-4 mb-6">
         <button
-          onClick={() => setZoom(Math.min(zoom + 0.2, 2))}
+          onClick={() => setZoom((z) => clampZoom(z + 0.2))}
           className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
           disabled={zoom >= 2}
         >
           <ZoomIn size={16} />
         </button>
         <button
-          onClick={() => setZoom(Math.max(zoom - 0.2, 0.4))}
+          onClick={() => setZoom((z) => clampZoom(z - 0.2))}
           className="p-2 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
           disabled={zoom <= 0.4}
         >
@@ -342,7 +345,6 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       {/* Game Board */}
       <div className="flex justify-center mb-6">
         <div
-          ref={canvasRef}
           className="relative bg-slate-100 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing select-none"
           style={{
             width: VIEWPORT_SIZE * CELL_SIZE * zoom,
@@ -356,7 +358,6 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
           onContextMenu={(e) => e.preventDefault()}
         >
           {renderGrid()}
-
           {/* Center indicator */}
           <div
             className="absolute w-1 h-1 bg-red-500 rounded-full pointer-events-none"
