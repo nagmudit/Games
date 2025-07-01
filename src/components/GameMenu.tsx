@@ -229,23 +229,23 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
   return (
     <div className="max-w-6xl mx-auto">
       <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold mb-4 dark:text-slate-100">
+        <h2 className="text-3xl font-bold mb-4 text-black dark:text-slate-100">
           Choose Your Game
         </h2>
-        <p className="text-lg text-slate-600 dark:text-slate-400">
+        <p className="text-lg text-black dark:text-slate-400">
           Select from our collection of tic-tac-toe variants
         </p>
 
         {/* Animated symbols around the title */}
         <div className="relative mt-6 mb-8">
           <div className="absolute left-1/2 transform -translate-x-1/2 -top-8 text-4xl">
-            <span className="inline-block text-blue-500/40 dark:text-blue-400/30 wiggle-animation mr-4">
+            <span className="inline-block text-blue-500/60 dark:text-blue-400/30 wiggle-animation mr-4">
               X
             </span>
-            <span className="inline-block text-red-500/40 dark:text-red-400/30 float-animation">
+            <span className="inline-block text-red-500/60 dark:text-red-400/30 float-animation">
               O
             </span>
-            <span className="inline-block text-green-500/40 dark:text-green-400/30 glitch-animation ml-4">
+            <span className="inline-block text-green-500/60 dark:text-green-400/30 glitch-animation ml-4">
               Δ
             </span>
           </div>
@@ -255,8 +255,8 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
       {/* Difficulty Filter */}
       <div className="mb-8">
         <div className="flex items-center justify-center gap-4 mb-4">
-          <Filter size={20} className="text-slate-600 dark:text-slate-400" />
-          <span className="text-lg font-medium text-slate-800 dark:text-slate-200">
+          <Filter size={20} className="text-black dark:text-slate-400" />
+          <span className="text-lg font-medium text-black dark:text-slate-200">
             Filter by Difficulty:
           </span>
         </div>
@@ -309,7 +309,7 @@ export default function GameMenu({ onSelectGame }: GameMenuProps) {
 
       {/* Results Count */}
       <div className="text-center mb-6">
-        <p className="text-sm text-slate-600 dark:text-slate-400">
+        <p className="text-sm text-black dark:text-slate-400">
           Showing {filteredGames.length} of {games.length} variants
           {selectedDifficulty !== "All" && (
             <span className="ml-2">

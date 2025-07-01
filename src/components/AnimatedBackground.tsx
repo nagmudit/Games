@@ -22,12 +22,12 @@ export default function AnimatedBackground() {
       const newSymbols: AnimatedSymbol[] = [];
       const symbolTypes: ("X" | "O" | "Δ")[] = ["X", "O", "Δ"];
       const colors = [
-        "text-blue-400/30 dark:text-blue-300/20",
-        "text-red-400/30 dark:text-red-300/20",
-        "text-green-400/30 dark:text-green-300/20",
-        "text-purple-400/30 dark:text-purple-300/20",
-        "text-cyan-400/30 dark:text-cyan-300/20",
-        "text-orange-400/30 dark:text-orange-300/20",
+        "text-blue-400/40 dark:text-blue-300/20",
+        "text-red-400/40 dark:text-red-300/20",
+        "text-green-400/40 dark:text-green-300/20",
+        "text-purple-400/40 dark:text-purple-300/20",
+        "text-cyan-400/40 dark:text-cyan-300/20",
+        "text-orange-400/40 dark:text-orange-300/20",
       ];
       const animations = [
         "float-animation",
@@ -84,23 +84,23 @@ export default function AnimatedBackground() {
       ))}
 
       {/* Additional glitch effect overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/5 to-transparent dark:via-emerald-500/5 animate-pulse" />
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-blue-500/3 to-transparent dark:via-emerald-500/5 animate-pulse" />
 
       {/* Floating particles */}
       <div
-        className="absolute top-10 left-10 w-2 h-2 bg-blue-400/20 rounded-full bounce-in-animation"
+        className="absolute top-10 left-10 w-2 h-2 bg-blue-400/15 dark:bg-blue-400/20 rounded-full bounce-in-animation"
         style={{ animationDelay: "0.5s" }}
       />
       <div
-        className="absolute top-1/4 right-20 w-3 h-3 bg-red-400/20 rounded-full bounce-in-animation"
+        className="absolute top-1/4 right-20 w-3 h-3 bg-red-400/15 dark:bg-red-400/20 rounded-full bounce-in-animation"
         style={{ animationDelay: "1s" }}
       />
       <div
-        className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-green-400/20 rounded-full bounce-in-animation"
+        className="absolute bottom-1/3 left-1/4 w-2 h-2 bg-green-400/15 dark:bg-green-400/20 rounded-full bounce-in-animation"
         style={{ animationDelay: "1.5s" }}
       />
       <div
-        className="absolute bottom-20 right-1/3 w-4 h-4 bg-purple-400/20 rounded-full bounce-in-animation"
+        className="absolute bottom-20 right-1/3 w-4 h-4 bg-purple-400/15 dark:bg-purple-400/20 rounded-full bounce-in-animation"
         style={{ animationDelay: "2s" }}
       />
     </div>

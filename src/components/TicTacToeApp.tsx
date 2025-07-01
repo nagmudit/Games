@@ -111,7 +111,9 @@ export default function TicTacToeApp() {
   return (
     <div
       className={`min-h-screen transition-colors duration-300 relative ${
-        isDarkMode ? "bg-slate-900 text-slate-100" : "bg-blue-50 text-slate-800"
+        isDarkMode
+          ? "bg-slate-900 text-slate-100"
+          : "bg-slate-50 text-slate-900"
       }`}
     >
       {/* Animated Background - only show on main menu */}
@@ -128,7 +130,7 @@ export default function TicTacToeApp() {
             className={`p-3 rounded-lg transition-colors duration-200 symbol-hover ${
               isDarkMode
                 ? "bg-slate-800 hover:bg-slate-700 text-emerald-400"
-                : "bg-white hover:bg-gray-100 text-blue-600 shadow-sm"
+                : "bg-white hover:bg-gray-100 text-blue-600 shadow-md border border-slate-200"
             }`}
           >
             {isDarkMode ? <Sun size={24} /> : <Moon size={24} />}
