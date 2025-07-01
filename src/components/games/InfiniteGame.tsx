@@ -78,7 +78,10 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     return null;
   };
 
-  const handleCellClick = (x: number, y: number) => {
+  const handleCellClick = (x: number, y: number, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
     if (board.get(positionToKey(x, y)) || gameEnded) return;
 
     const newBoard = new Map(board);
@@ -123,9 +126,12 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
     const deltaX = e.clientX - dragStart.x;
     const deltaY = e.clientY - dragStart.y;
 
-    setViewportX(viewportX - deltaX / (CELL_SIZE * zoom));
-    setViewportY(viewportY - deltaY / (CELL_SIZE * zoom));
-    setDragStart({ x: e.clientX, y: e.clientY });
+    // Only start dragging if mouse has moved significantly
+    if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+      setViewportX(viewportX - deltaX / (CELL_SIZE * zoom));
+      setViewportY(viewportY - deltaY / (CELL_SIZE * zoom));
+      setDragStart({ x: e.clientX, y: e.clientY });
+    }
   };
 
   const handleMouseUp = () => {
@@ -149,36 +155,55 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
         const key = positionToKey(x, y);
         const cell = board.get(key);
 
-        cells.push(
-          <button
-            key={key}
-            onClick={() => handleCellClick(x, y)}
-            disabled={cell !== null || gameEnded}
-            className="border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors disabled:cursor-not-allowed flex items-center justify-center text-sm font-bold"
-            style={{
-              position: "absolute",
-              left:
-                (x - viewportX) * CELL_SIZE * zoom +
-                (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2,
-              top:
-                (y - viewportY) * CELL_SIZE * zoom +
-                (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2,
-              width: CELL_SIZE * zoom,
-              height: CELL_SIZE * zoom,
-              fontSize: `${Math.max(12, 16 * zoom)}px`,
-            }}
-          >
-            <span
-              className={
-                cell === "X"
-                  ? "text-blue-600 dark:text-blue-400"
-                  : "text-red-600 dark:text-red-400"
-              }
+        // Calculate position relative to viewport center
+        const relativeX = x - viewportX;
+        const relativeY = y - viewportY;
+
+        const left =
+          relativeX * CELL_SIZE * zoom + (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2;
+        const top =
+          relativeY * CELL_SIZE * zoom + (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2;
+
+        // Only render cells that are within the visible area
+        if (
+          left >= -CELL_SIZE * zoom &&
+          left < VIEWPORT_SIZE * CELL_SIZE * zoom &&
+          top >= -CELL_SIZE * zoom &&
+          top < VIEWPORT_SIZE * CELL_SIZE * zoom
+        ) {
+          cells.push(
+            <button
+              key={key}
+              onClick={(e) => handleCellClick(x, y, e)}
+              disabled={cell !== null || gameEnded}
+              className={`border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-blue-50 dark:hover:bg-slate-700 transition-colors flex items-center justify-center text-sm font-bold ${
+                cell !== null || gameEnded
+                  ? "cursor-not-allowed"
+                  : "cursor-pointer hover:border-blue-400"
+              }`}
+              style={{
+                position: "absolute",
+                left: left,
+                top: top,
+                width: CELL_SIZE * zoom,
+                height: CELL_SIZE * zoom,
+                fontSize: `${Math.max(12, 16 * zoom)}px`,
+                pointerEvents: "auto",
+                zIndex: 10,
+              }}
             >
-              {cell}
-            </span>
-          </button>
-        );
+              <span
+                className={
+                  cell === "X"
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-red-600 dark:text-red-400"
+                }
+              >
+                {cell}
+              </span>
+            </button>
+          );
+        }
       }
     }
 
@@ -186,14 +211,22 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
   };
 
   useEffect(() => {
-    const handleGlobalMouseUp = () => setIsDragging(false);
+    const handleGlobalMouseUp = () => {
+      setIsDragging(false);
+    };
+
     const handleGlobalMouseMove = (e: MouseEvent) => {
       if (!isDragging) return;
+
       const deltaX = e.clientX - dragStart.x;
       const deltaY = e.clientY - dragStart.y;
-      setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
-      setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
-      setDragStart({ x: e.clientX, y: e.clientY });
+
+      // Only start dragging if mouse has moved significantly
+      if (Math.abs(deltaX) > 5 || Math.abs(deltaY) > 5) {
+        setViewportX((prev) => prev - deltaX / (CELL_SIZE * zoom));
+        setViewportY((prev) => prev - deltaY / (CELL_SIZE * zoom));
+        setDragStart({ x: e.clientX, y: e.clientY });
+      }
     };
 
     if (isDragging) {
@@ -310,7 +343,7 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
       <div className="flex justify-center mb-6">
         <div
           ref={canvasRef}
-          className="relative bg-slate-100 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing"
+          className="relative bg-slate-100 dark:bg-slate-900 border-2 border-slate-300 dark:border-slate-600 rounded-lg overflow-hidden cursor-grab active:cursor-grabbing select-none"
           style={{
             width: VIEWPORT_SIZE * CELL_SIZE * zoom,
             height: VIEWPORT_SIZE * CELL_SIZE * zoom,
@@ -320,15 +353,17 @@ export default function InfiniteGame({ onBack }: InfiniteGameProps) {
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
+          onContextMenu={(e) => e.preventDefault()}
         >
           {renderGrid()}
 
           {/* Center indicator */}
           <div
-            className="absolute w-1 h-1 bg-red-500 rounded-full"
+            className="absolute w-1 h-1 bg-red-500 rounded-full pointer-events-none"
             style={{
               left: (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2 - 2,
               top: (VIEWPORT_SIZE * CELL_SIZE * zoom) / 2 - 2,
+              zIndex: 5,
             }}
           />
         </div>
